@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Miloshinjo/gophersizes-1-quiz-game/pkg/questions"
+	"github.com/Miloshinjo/gophersizes-1-quiz-game/pkg/problems"
 	"github.com/Miloshinjo/gophersizes-1-quiz-game/pkg/userinput"
 )
 
@@ -18,21 +18,16 @@ func parseAnswer(a string) string {
 	return t
 }
 
-type Score struct {
-	Correct   uint
-	Incorrect uint
-}
-
 func New() {
-	questions := questions.Load()
+	problems := problems.Load()
 	score := 0
 
-	for index, question := range questions {
-		answer := userinput.Get(fmt.Sprintf("Question %d: %s: ", index+1, question.Q))
+	for index, problem := range problems {
+		answer := userinput.Get(fmt.Sprintf("Question %d: %s: ", index+1, problem.Q))
 
 		parsedAnswer := parseAnswer(answer)
 
-		isCorrect := parsedAnswer == question.A
+		isCorrect := parsedAnswer == problem.A
 
 		if isCorrect {
 			score = score + 1
@@ -40,5 +35,5 @@ func New() {
 	}
 
 	fmt.Println("Game over! Here is your score:")
-	fmt.Printf("Congrats! %d out of %d answers are correct!", score, len(questions))
+	fmt.Printf("Congrats! %d out of %d answers are correct!", score, len(problems))
 }

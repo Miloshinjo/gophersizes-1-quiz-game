@@ -1,18 +1,23 @@
-package questions
+package problems
 
 import (
 	"encoding/csv"
+	"flag"
 	"os"
 )
 
-type Question struct {
+type Problem struct {
 	Q string
 	A string
 }
 
-func Load() []Question {
+func Load() []Problem {
+	// get CSV filename
+	csvFilename := flag.String("csv", "problems.csv", "a csv file in format of question/answer")
+	flag.Parse()
+
 	// Load CSV file
-	file, err := os.Open("problems.csv")
+	file, err := os.Open(*csvFilename)
 	if err != nil {
 		panic("could not open CSV file.")
 	}
@@ -26,16 +31,16 @@ func Load() []Question {
 		panic("could not read records.")
 	}
 
-	var questions []Question
+	var problems []Problem
 
 	for _, record := range records {
-		question := Question{
+		question := Problem{
 			Q: record[0],
 			A: record[1],
 		}
 
-		questions = append(questions, question)
+		problems = append(problems, question)
 	}
 
-	return questions
+	return problems
 }
